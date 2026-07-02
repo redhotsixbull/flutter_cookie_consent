@@ -1,51 +1,39 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_cookie_consent/flutter_cookie_consent_method_channel.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  MethodChannelFlutterCookieConsent platform =
+  final MethodChannelFlutterCookieConsent platform =
       MethodChannelFlutterCookieConsent();
-  const MethodChannel channel = MethodChannel('flutter_cookie_consent');
 
   setUp(() {
-    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(
-      channel,
-      (MethodCall methodCall) async {
-        switch (methodCall.method) {
-          case 'getCookiePreferences':
-            return {'essential': true, 'analytics': true};
-          case 'saveCookiePreferences':
-            return null;
-          default:
-            return null;
-        }
-      },
-    );
+    // The mobile/desktop implementation persists preferences through
+    // shared_preferences, so provide an in-memory backend for the test.
+    SharedPreferences.setMockInitialValues({});
   });
 
-  tearDown(() {
-    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(channel, null);
+  test('getCookiePreferences returns an empty map when nothing is stored',
+      () async {
+    final preferences = await platform.getCookiePreferences();
+    expect(preferences, isEmpty);
   });
 
-  test('getCookiePreferences', () async {
+  test('saveCookiePreferences persists and getCookiePreferences reads back',
+      () async {
+    final saved = {
+      'essential': true,
+      'analytics': true,
+      'marketing': false,
+    };
+
+    await expectLater(platform.saveCookiePreferences(saved), completes);
+
     final preferences = await platform.getCookiePreferences();
     expect(preferences, isNotNull);
     expect(preferences!['essential'], true);
     expect(preferences['analytics'], true);
-  });
-
-  test('saveCookiePreferences', () async {
-    await expectLater(
-      platform.saveCookiePreferences({
-        'essential': true,
-        'analytics': true,
-        'marketing': false,
-      }),
-      completes,
-    );
+    expect(preferences['marketing'], false);
   });
 }
