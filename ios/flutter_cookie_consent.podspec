@@ -4,16 +4,16 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'flutter_cookie_consent'
-  s.version          = '0.0.1'
-  s.summary          = 'Flutter Cookie Consent UI'
+  s.version          = '1.1.0'
+  s.summary          = 'A Flutter package for GDPR-compliant cookie consent banners and privacy preferences.'
   s.description      = <<-DESC
-Flutter Cookie Consent UI
+A Flutter package for implementing GDPR-compliant cookie consent banners and privacy preferences.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://github.com/redhotsixbull/flutter_cookie_consent'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'redhotsixbull' => 'ccomekdj@gmail.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
+  s.source_files = 'flutter_cookie_consent/Sources/flutter_cookie_consent/**/*.swift'
   s.dependency 'Flutter'
   s.platform = :ios, '12.0'
 
@@ -21,9 +21,7 @@ Flutter Cookie Consent UI
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   s.swift_version = '5.0'
 
-  # If your plugin requires a privacy manifest, for example if it uses any
-  # required reason APIs, update the PrivacyInfo.xcprivacy file to describe your
-  # plugin's privacy impact, and then uncomment this line. For more information,
-  # see https://developer.apple.com/documentation/bundleresources/privacy_manifest_files
-  # s.resource_bundles = {'flutter_cookie_consent_privacy' => ['Resources/PrivacyInfo.xcprivacy']}
+  # This plugin ships a privacy manifest describing its (empty) required-reason
+  # API usage. See https://developer.apple.com/documentation/bundleresources/privacy_manifest_files
+  s.resource_bundles = {'flutter_cookie_consent_privacy' => ['flutter_cookie_consent/Sources/flutter_cookie_consent/PrivacyInfo.xcprivacy']}
 end

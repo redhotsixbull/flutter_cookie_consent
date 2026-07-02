@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-07-02
+
+### Added
+
+- **Swift Package Manager (SPM) support for iOS.** The iOS plugin now ships a
+  `Package.swift` and follows the SPM source layout, resolving the
+  "The following plugins do not support Swift Package Manager for iOS" warning.
+  CocoaPods remains fully supported for backward compatibility.
+
+### Changed
+
+- Modernized the web implementation: replaced `universal_html` with the
+  standards-based `package:web` + `dart:js_interop`. The web build is now
+  WebAssembly (Wasm) compatible.
+- Corrected the iOS podspec metadata (version, homepage, author, summary) which
+  still held template placeholder values.
+- Bumped dependencies: `flutter_lints` ^6.0.0, `plugin_platform_interface`
+  ^2.1.8.
+
+### Fixed
+
+- Rewrote the mobile unit tests to exercise the real `shared_preferences`-backed
+  implementation (they previously mocked an unused method channel and failed).
+
 ## [1.0.3] - 2025-01-27
 
 ### Changed
